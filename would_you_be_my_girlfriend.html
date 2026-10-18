@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Would You Be My Bestfriend? 🥺💖</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Family -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        font-family: "Quicksand", sans-serif;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      .title-font {
+        font-family: "Fredoka One", cursive;
+      }
+
+      /* Animated Soft Pink Background Gradient */
+      body {
+        background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+        background-size: 400% 400%;
+        animation: gradientBG 12s ease infinite;
+        overflow: hidden;
+      }
+
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Floating Hearts Animation in Background */
+      .heart-particle {
+        position: absolute;
+        pointer-events: none;
+        animation: floatUp 6s linear infinite;
+        opacity: 0.7;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(100vh) scale(0.5) rotate(0deg);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-10vh) scale(1.2) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* Bounce & Pulse Animations */
+      .bounce-gentle {
+        animation: bounceGentle 2s infinite;
+      }
+
+      @keyframes bounceGentle {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Teleport Button Transition */
+      #no-btn {
+        transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 50;
+      }
+
+      /* Glassmorphic Card Shadow */
+      .cute-card {
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 20px 50px rgba(236, 72, 153, 0.25);
+      }
+
+      /* Custom Heart Pulse */
+      .heart-beat {
+        animation: heartbeat 1.2s infinite;
+      }
+
+      @keyframes heartbeat {
+        0% {
+          transform: scale(1);
+        }
+        14% {
+          transform: scale(1.15);
+        }
+        28% {
+          transform: scale(1);
+        }
+        42% {
+          transform: scale(1.15);
+        }
+        70% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="h-screen w-screen flex items-center justify-center p-4 relative overflow-hidden"
+  >
+    <!-- Audio Effects using Web Audio API (Self-contained, no external mp3 dependency) -->
+
+    <!-- Floating Background Hearts Container -->
+    <div id="hearts-bg" class="absolute inset-0 pointer-events-none"></div>
+
+    <!-- Main Container Card -->
+    <div
+      id="main-card"
+      class="cute-card rounded-3xl p-6 sm:p-10 max-w-md w-full text-center relative z-10 border-4 border-pink-200 transition-all duration-500 transform scale-100"
+    >
+      <!-- Interactive Cute GIF / SVG Illustration -->
+      <div
+        class="relative w-44 h-44 mx-auto mb-4 flex items-center justify-center"
+      >
+        <!-- Cute SVG Bear Illustration with Heart -->
+        <svg
+          id="bear-svg"
+          class="w-full h-full bounce-gentle drop-shadow-md"
+          viewBox="0 0 200 200"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- Ears -->
+          <circle cx="65" cy="55" r="22" fill="#E2A970" />
+          <circle cx="65" cy="55" r="14" fill="#FFCBB3" />
+          <circle cx="135" cy="55" r="22" fill="#E2A970" />
+          <circle cx="135" cy="55" r="14" fill="#FFCBB3" />
+          <!-- Head -->
+          <circle cx="100" cy="95" r="50" fill="#F3C396" />
+          <!-- Cheeks -->
+          <circle cx="72" cy="105" r="10" fill="#FF94B9" opacity="0.6" />
+          <circle cx="128" cy="105" r="10" fill="#FF94B9" opacity="0.6" />
+          <!-- Eyes -->
+          <ellipse cx="80" cy="92" rx="5" ry="7" fill="#3D2B1F" />
+          <ellipse cx="120" cy="92" rx="5" ry="7" fill="#3D2B1F" />
+          <circle cx="82" cy="90" r="2" fill="white" />
+          <circle cx="122" cy="90" r="2" fill="white" />
+          <!-- Snout & Nose -->
+          <ellipse cx="100" cy="102" rx="14" ry="10" fill="white" />
+          <ellipse cx="100" cy="98" rx="5" ry="3.5" fill="#3D2B1F" />
+          <path
+            d="M100 101.5 V106 Q100 108 96 108 M100 106 Q100 108 104 108"
+            stroke="#3D2B1F"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <!-- Big Animated Heart Held by Bear -->
+          <g class="heart-beat">
+            <path
+              d="M100 160 C90 140 60 135 60 115 C60 100 75 90 90 100 C100 108 100 108 100 108 C100 108 100 108 110 100 C125 90 140 100 140 115 C140 135 110 140 100 160 Z"
+              fill="#FF4B72"
+            />
+            <!-- Paws -->
+            <circle cx="68" cy="125" r="11" fill="#F3C396" />
+            <circle cx="132" cy="125" r="11" fill="#F3C396" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Question Title -->
+      <h1
+        id="question-text"
+        class="title-font text-2xl sm:text-3xl text-pink-600 mb-2 leading-tight"
+      >
+        Kak Faiza!
+      </h1>
+      <h1
+        id="question-text"
+        class="title-font text-2xl sm:text-3xl text-pink-600 mb-2 leading-tight"
+      >
+        Would you be my bestfriend? 🥺
+      </h1>
+      <p id="sub-text" class="text-gray-600 text-sm mb-6 font-medium">
+        Please say yes! I promise to make you the happiest! ✨💖
+      </p>
+
+      <!-- Buttons Container -->
+      <div
+        id="btn-group"
+        class="flex flex-col sm:flex-row items-center justify-center gap-4 min-h-[90px] relative"
+      >
+        <!-- YES Button -->
+        <button
+          id="yes-btn"
+          onclick="acceptProposal()"
+          class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-pink-400/50 transform hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer z-20"
+        >
+          <span>YES! 💖</span>
+        </button>
+
+        <!-- NO Teleporting Button -->
+        <button
+          id="no-btn"
+          class="w-full sm:w-auto px-8 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-lg rounded-full shadow-md cursor-pointer select-none"
+        >
+          No 😢
+        </button>
+      </div>
+
+      <!-- Dodge Counter Display -->
+      <div
+        id="dodge-hint"
+        class="mt-4 text-xs text-pink-400 font-semibold opacity-0 transition-opacity duration-300"
+      >
+        Dodged: <span id="dodge-count">0</span> times! 😜
+      </div>
+    </div>
+
+    <!-- Celebration Screen (Initially Hidden) -->
+    <div
+      id="celebration-card"
+      class="hidden cute-card rounded-3xl p-8 max-w-md w-full text-center relative z-10 border-4 border-pink-300 transform scale-95 transition-all duration-500"
+    >
+      <!-- Cute Celebration SVG Animation -->
+      <div class="relative w-48 h-48 mx-auto mb-4">
+        <svg
+          class="w-full h-full bounce-gentle"
+          viewBox="0 0 200 200"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- Happy Bear Holding Flowers -->
+          <circle cx="65" cy="55" r="22" fill="#E2A970" />
+          <circle cx="65" cy="55" r="14" fill="#FFCBB3" />
+          <circle cx="135" cy="55" r="22" fill="#E2A970" />
+          <circle cx="135" cy="55" r="14" fill="#FFCBB3" />
+          <circle cx="100" cy="95" r="50" fill="#F3C396" />
+          <!-- Happy Eyes -->
+          <path
+            d="M72 92 Q80 82 88 92"
+            stroke="#3D2B1F"
+            stroke-width="4"
+            stroke-linecap="round"
+            fill="none"
+          />
+          <path
+            d="M112 92 Q120 82 128 92"
+            stroke="#3D2B1F"
+            stroke-width="4"
+            stroke-linecap="round"
+            fill="none"
+          />
+          <!-- Blush -->
+          <circle cx="70" cy="102" r="10" fill="#FF719A" opacity="0.7" />
+          <circle cx="130" cy="102" r="10" fill="#FF719A" opacity="0.7" />
+          <!-- Big Happy Smile -->
+          <path
+            d="M90 108 Q100 122 110 108"
+            stroke="#3D2B1F"
+            stroke-width="3.5"
+            stroke-linecap="round"
+            fill="#FF4B72"
+          />
+          <!-- Crown / Sparkles -->
+          <path
+            d="M100 30 L105 40 L115 42 L107 50 L109 60 L100 55 L91 60 L93 50 L85 42 L95 40 Z"
+            fill="#FFD700"
+          />
+          <!-- Flower Bouquet -->
+          <g transform="translate(0, 10)">
+            <circle cx="100" cy="140" r="12" fill="#FF4B72" />
+            <circle cx="85" cy="148" r="10" fill="#FFB6C1" />
+            <circle cx="115" cy="148" r="10" fill="#FFB6C1" />
+            <circle cx="100" cy="160" r="10" fill="#FF85A2" />
+            <circle cx="100" cy="140" r="4" fill="#FFD700" />
+          </g>
+        </svg>
+      </div>
+
+      <h1
+        class="title-font text-3xl sm:text-4xl text-pink-600 mb-3 animate-pulse"
+      >
+        YAAAAY! 🎉💖🥰
+      </h1>
+      <p class="text-gray-700 font-bold text-lg mb-2">
+        I knew you would say YES!
+      </p>
+      <p class="text-pink-500 text-sm font-semibold mb-6">
+        You are officially the sweetest bestfriend ever! ✨ Target locked
+        forever & ever! 🔒💕
+      </p>
+
+      <!-- Date Promise Badge -->
+      <div
+        class="bg-pink-100/80 rounded-2xl p-4 border border-pink-200 mb-6 text-left space-y-2 text-sm text-pink-900"
+      >
+        <div class="flex items-center gap-2 font-bold">
+          <span>🌹 Date Ticket Confirmed:</span>
+        </div>
+        <div class="text-xs text-pink-700">
+          • Unlimited friendship!<br />
+          • Cute Ice Cream & Coffee Dates Planned<br />
+          • No refunds or returns allowed! 😁
+        </div>
+      </div>
+
+      <button
+        onclick="location.reload()"
+        class="px-6 py-2.5 bg-pink-200 hover:bg-pink-300 text-pink-800 rounded-full font-bold text-sm transition-colors"
+      >
+        Replay Cute Moment 🔄
+      </button>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+      const noBtn = document.getElementById("no-btn");
+      const yesBtn = document.getElementById("yes-btn");
+      const mainCard = document.getElementById("main-card");
+      const celebrationCard = document.getElementById("celebration-card");
+      const dodgeCountSpan = document.getElementById("dodge-count");
+      const dodgeHint = document.getElementById("dodge-hint");
+
+      let dodgeCount = 0;
+
+      // Fun funny phrases when No button teleports
+      const funnyTexts = [
+        "Eits gabisa! 😜",
+        "Coba lagi wkwk! 🤪",
+        "Nggak boleh pencet ini! 💖",
+        "Yakin ga mau? 🥺",
+        "Ups, kabur! 🏃‍♂️",
+        "Eiittss meleset! 🙈",
+        "Mau pencet NO? No way! 😂",
+        "Mana bisassss 😜",
+        "Pencet YES aja deh! 🌹",
+      ];
+
+      // Teleport No Button logic
+      function teleportButton(e) {
+        if (e) e.preventDefault();
+
+        playPopSound();
+
+        dodgeCount++;
+        dodgeCountSpan.innerText = dodgeCount;
+        dodgeHint.style.opacity = "1";
+
+        // Change button text randomly
+        const randomText =
+          funnyTexts[Math.floor(Math.random() * funnyTexts.length)];
+        noBtn.innerText = randomText;
+
+        // Get viewport dimensions
+        const padding = 20;
+        const btnWidth = noBtn.offsetWidth;
+        const btnHeight = noBtn.offsetHeight;
+
+        const maxX = window.innerWidth - btnWidth - padding;
+        const maxY = window.innerHeight - btnHeight - padding;
+
+        // Generate random fixed coordinates within screen limits
+        const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+        // Set fixed position so it moves around anywhere on viewport
+        noBtn.style.position = "fixed";
+        noBtn.style.left = `${randomX}px`;
+        noBtn.style.top = `${randomY}px`;
+
+        // Slightly expand YES button to make it even easier & tempting to click
+        const currentYesScale = 1 + dodgeCount * 0.05;
+        if (currentYesScale < 1.8) {
+          yesBtn.style.transform = `scale(${currentYesScale})`;
+        }
+      }
+
+      // Event listeners for No Button (Desktop Hover & Mobile Touch)
+      noBtn.addEventListener("mouseover", teleportButton);
+      noBtn.addEventListener("touchstart", teleportButton, { passive: false });
+      noBtn.addEventListener("click", teleportButton);
+
+      // Accept Proposal Logic (YES Button Clicked)
+      function acceptProposal() {
+        playFanfareSound();
+
+        // Trigger Confetti Explosion
+        launchConfetti();
+
+        // Smooth transition to celebration screen
+        mainCard.classList.add("scale-90", "opacity-0");
+        setTimeout(() => {
+          mainCard.classList.add("hidden");
+          celebrationCard.classList.remove("hidden");
+          setTimeout(() => {
+            celebrationCard.classList.remove("scale-95");
+            celebrationCard.classList.add("scale-100");
+          }, 50);
+        }, 400);
+      }
+
+      // Floating Hearts Background Builder
+      function createHeartParticle() {
+        const container = document.getElementById("hearts-bg");
+        const heart = document.createElement("div");
+        heart.classList.add("heart-particle");
+
+        const heartIcons = ["💖", "💕", "🌸", "✨", "💗", "❤️"];
+        heart.innerText =
+          heartIcons[Math.floor(Math.random() * heartIcons.length)];
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 18 + 14 + "px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+
+        container.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 7000);
+      }
+
+      setInterval(createHeartParticle, 400);
+
+      // Confetti Fireworks Engine
+      function launchConfetti() {
+        const count = 200;
+        const defaults = { origin: { y: 0.7 } };
+
+        function fire(particleRatio, opts) {
+          confetti(
+            Object.assign({}, defaults, opts, {
+              particleCount: Math.floor(count * particleRatio),
+            }),
+          );
+        }
+
+        fire(0.25, {
+          spread: 26,
+          startVelocity: 55,
+          colors: ["#ff4b72", "#ff85a2"],
+        });
+        fire(0.2, { spread: 60, colors: ["#ffffff", "#ffb6c1"] });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+        fire(0.1, {
+          spread: 120,
+          startVelocity: 25,
+          decay: 0.92,
+          colors: ["#ffd700", "#ff69b4"],
+        });
+        fire(0.1, { spread: 120, startVelocity: 45 });
+      }
+
+      // Web Audio API Sound Synthesizer (No external sound files required)
+      let audioCtx = null;
+
+      function initAudio() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+
+      function playPopSound() {
+        try {
+          initAudio();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(
+            800,
+            audioCtx.currentTime + 0.1,
+          );
+
+          gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioCtx.currentTime + 0.1,
+          );
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.1);
+        } catch (e) {}
+      }
+
+      function playFanfareSound() {
+        try {
+          initAudio();
+          const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = "triangle";
+            osc.frequency.value = freq;
+
+            const startTime = audioCtx.currentTime + idx * 0.12;
+            gain.gain.setValueAtTime(0.3, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.4);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + 0.4);
+          });
+        } catch (e) {}
+      }
+    </script>
+  </body>
+</html>
